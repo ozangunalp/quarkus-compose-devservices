@@ -6,8 +6,10 @@ services:
     image: postgres:17
     restart: always
     labels:
+      ## HL: Map port mapping or env var to application properties
       io.quarkus.devservices.compose.config_map.port.5432: psql.port
-      io.quarkus.devservices.compose.config_map.env.POSTGRES_USER: psql.user 
+      io.quarkus.devservices.compose.config_map.env.POSTGRES_USER: psql.user
+    ## HL: health checks are used to determine if the dev service is ready
     healthcheck:
       test: pg_isready -U myuser -d mydb
       interval: 5s
@@ -16,6 +18,7 @@ services:
     ports:
       - '5432'
     environment:
+      ## HL: DB connection properties are extracted from the env vars
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydb
@@ -24,8 +27,10 @@ services:
       - test_pgdata:/var/lib/mydb/data
   mysql:
     image: mysql:8-oracle
+    ## HL use profiles to start the container only when needed
     profiles:
       - mysql
+    ## HL start services but ignore them for dev services
 #    labels:
 #      io.quarkus.devservices.compose.ignore: true
     ports:
@@ -36,9 +41,11 @@ services:
       MYSQL_PASSWORD: mypassword
       MYSQL_DATABASE: mymydb
   kafka:
-    image: apache/kafka-native:latest
+    image: my-broker:latest
     labels:
+      ## HL: Readiness check on logs
       io.quarkus.devservices.compose.wait_for.logs: .*Kafka Server started.*
+      ## HL: Host exposed ports are injected into the running container
       io.quarkus.devservices.compose.exposed_ports: /etc/kafka/docker/ports
     command: "/kafka.sh"
     restart: always
@@ -48,7 +55,6 @@ services:
     ports:
       - '9092'
     environment:
-      #      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9095
       KAFKA_NODE_ID: 1
       KAFKA_LOG_CLEANER_DEDUPE_BUFFER_SIZE: 2097152
       KAFKA_PROCESS_ROLES: broker,controller

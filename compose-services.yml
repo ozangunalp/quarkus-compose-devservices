@@ -2,7 +2,10 @@ services:
   rabbit:
     image: rabbitmq:3.12-management-alpine
     labels:
+      ## HL: Readiness check on logs
       io.quarkus.devservices.compose.wait_for.logs: .*Server startup complete.*
+      ## HL: Readiness check on ports timeout
+      io.quarkus.devservices.compose.wait_for.ports.timeout: "30s"
     ports:
       - '5672'
       - '15672'
