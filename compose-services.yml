@@ -1,0 +1,19 @@
+services:
+  rabbit:
+    image: rabbitmq:3.12-management-alpine
+    labels:
+      io.quarkus.devservices.compose.wait_for.logs: .*Server startup complete.*
+    ports:
+      - '5672'
+      - '15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+      - './compose/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro'
+      - './compose/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json'
+      - './compose/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf'
+    networks:
+      default:
+        aliases:
+          - rabbitmq
