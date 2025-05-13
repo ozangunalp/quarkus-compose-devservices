@@ -1,7 +1,10 @@
 name: your-services
+
 include:
   - compose-services.yml
+
 services:
+
   postgres:
     image: postgres:17
     restart: always
@@ -25,6 +28,7 @@ services:
       PGDATA: /var/lib/mydb/data
     volumes:
       - test_pgdata:/var/lib/mydb/data
+
   mysql:
     image: mysql:8-oracle
     ## HL use profiles to start the container only when needed
@@ -40,6 +44,7 @@ services:
       MYSQL_USER: myuser
       MYSQL_PASSWORD: mypassword
       MYSQL_DATABASE: mymydb
+
   kafka:
     image: my-broker:latest
     labels:
