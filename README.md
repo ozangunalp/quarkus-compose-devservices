@@ -1,4 +1,4 @@
-# posgres-quarkus
+# Quarkus Compose Dev Services Showcase
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

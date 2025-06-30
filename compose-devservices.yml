@@ -46,7 +46,9 @@ services:
       MYSQL_DATABASE: mymydb
 
   kafka:
-    image: my-broker:latest
+    image: apache/kafka-native:latest
+    ## HL custom images are possible by setting the image-name config property on the dev service
+#    image: my-broker:latest
     labels:
       ## HL: Readiness check on logs
       io.quarkus.devservices.compose.wait_for.logs: .*Kafka Server started.*
